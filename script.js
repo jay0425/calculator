@@ -27,14 +27,18 @@ const appendOperation = (operation) => {
 
 // 계산 결과를 input 창에 띄우는 함수
 const calculateResult = () => {
-  currentInput = evaluateExpression(currentInput).toString();
+  try {
+    currentInput = evaluateExpression(currentInput).toString();
+  } catch (e) {
+    currentInput = 'Error';
+  }
   display.value = currentInput;
 };
 
 const evaluateExpression = (ci) => {
   // ci는 currentInput의 약자이다
   let tokens = ci.match(/(\d+|\+|\-|\*|\/)/g);
-  if (!tokens) return alert('error'); // 슷자 없이 c버튼 클릭 시 에러
+  if (!tokens) return alert('error'); // 숫자 없이 c버튼 클릭 시 에러
 
   let values = [];
   let operations = [];
@@ -50,6 +54,7 @@ const evaluateExpression = (ci) => {
         let op = operations.pop();
         values.push(applyOperation(a, b, op));
       }
+      operations.push(token);
     }
   }
 
